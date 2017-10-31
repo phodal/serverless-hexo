@@ -7,6 +7,7 @@ const AWS = require('aws-sdk')
 const request = require("request");
 const unzip = require("unzip");
 const S3 = new AWS.S3(require('./s3config.js')())
+var walk    = require('walk');
 
 let create = (event, context, callback) => {
   request.get('https://github.com/phodal/serverless-hexo-blog-static-files/archive/master.zip')
@@ -24,52 +25,33 @@ let create = (event, context, callback) => {
               .then(() => {
                 console.info(`Hexo done`);
                 // resolve full folder path
-                const distFolderPath = path.join("/tmp/serverless-hexo-blog-static-files-master/public");
-                fs.readdir(distFolderPath, (err, files) => {
-                  console.info(`start file processing`);
-                  if (!files || files.length === 0) {
-                    console.log(`provided folder '${distFolderPath}' is empty or does not exist.`);
-                    console.log('Make sure your project was compiled!');
-                    return callback(null, {
-                      statusCode: 500,
-                      body: JSON.stringify({
-                        message: `文件异常 ${distFolderPath}`,
-                        input: event,
-                      })
-                    });
-                  }
-
-                  for (const fileName of files) {
-                    const filePath = path.join(distFolderPath, fileName);
-                    if (fs.lstatSync(filePath).isDirectory()) {
-                      continue;
-                    } else {
-                      hexo.exit();
-                      callback(null, {
-                        statusCode: 200,
-                        body: JSON.stringify({
-                          message: '成功',
-                          input: event,
-                        })
-                      });
+                var walker  = walk.walk('/tmp/serverless-hexo-blog-static-files-master/public', { followLinks: false });
+                walker.on('file', function(root, stat, next) {
+                  let filePath = stat.name;
+                  fs.readFile('/tmp/serverless-hexo-blog-static-files-master/' + filePath, (error, fileContent) => {
+                    if (error) {
+                      throw error;
                     }
-
-                    fs.readFile(filePath, (error, fileContent) => {
-                      if (error) {
-                        console.log("---------------");
-                        console.log(filePath);
-                        console.log(error);
-                        throw error;
-                      }
-                      S3.putObject({
-                        Bucket: 'static.wdsm.io',
-                        Key: fileName,
-                        Body: fileContent
-                      }, (res) => {
-                        console.log(`Successfully uploaded '${fileName}'!`);
-                      });
+                    S3.putObject({
+                      Bucket: 'static.wdsm.io',
+                      Key: filePath,
+                      Body: fileContent
+                    }, (res) => {
+                      console.log(`Successfully uploaded '${filePath}'!`);
                     });
-                  }
+                  });
+                  next();
+                });
+
+                walker.on('end', function() {
+                  hexo.exit();
+                  callback(null, {
+                    statusCode: 201,
+                    body: JSON.stringify({
+                      message: '创建成功',
+                      input: event,
+                    })
+                  });
                 });
               })
               .catch(() => {
@@ -99,6 +81,6 @@ let create = (event, context, callback) => {
 };
 
 
-// create();
+create();
 
 exports.create = create;

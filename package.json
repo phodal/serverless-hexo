@@ -2,8 +2,8 @@
   "dependencies": {
     "aws-sdk": "^2.141.0",
     "hexo": "^3.4.0",
-
     "request": "^2.83.0",
-    "unzip": "^0.1.11"
+    "unzip": "^0.1.11",
+    "walk": "^2.3.9"
   }
 }
