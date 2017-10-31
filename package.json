@@ -1,6 +1,9 @@
 {
   "dependencies": {
+    "aws-sdk": "^2.141.0",
     "hexo": "^3.4.0",
-    "nodegit": "^0.20.3"
+
+    "request": "^2.83.0",
+    "unzip": "^0.1.11"
   }
 }
