@@ -26,6 +26,7 @@ let create = (event, context, callback) => {
                 // resolve full folder path
                 const distFolderPath = path.join("/tmp/serverless-hexo-blog-static-files-master/public");
                 fs.readdir(distFolderPath, (err, files) => {
+                  console.info(`start file processing`);
                   if (!files || files.length === 0) {
                     console.log(`provided folder '${distFolderPath}' is empty or does not exist.`);
                     console.log('Make sure your project was compiled!');
@@ -42,6 +43,15 @@ let create = (event, context, callback) => {
                     const filePath = path.join(distFolderPath, fileName);
                     if (fs.lstatSync(filePath).isDirectory()) {
                       continue;
+                    } else {
+                      hexo.exit();
+                      callback(null, {
+                        statusCode: 200,
+                        body: JSON.stringify({
+                          message: '成功',
+                          input: event,
+                        })
+                      });
                     }
 
                     fs.readFile(filePath, (error, fileContent) => {
@@ -57,16 +67,6 @@ let create = (event, context, callback) => {
                       });
                     });
                   }
-
-
-                  hexo.exit();
-                  callback(null, {
-                    statusCode: 200,
-                    body: JSON.stringify({
-                      message: '成功',
-                      input: event,
-                    })
-                  });
                 });
               })
               .catch(() => {
