@@ -55,8 +55,12 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  hello:
-    handler: handler.hello
+  create:
+    handler: handler.create
+    events:
+      - http:
+          path: create
+          method: get
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
@@ -96,7 +100,7 @@ resources:
    NewResource:
      Type: AWS::S3::Bucket
      Properties:
-       BucketName: wdsm.io
+       BucketName: static.wdsm.io
 #  Outputs:
 #     NewOutput:
 #       Description: "Description for the output"
