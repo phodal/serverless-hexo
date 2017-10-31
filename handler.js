@@ -57,15 +57,16 @@ let create = (event, context, callback) => {
                       });
                     });
                   }
-                });
 
-                hexo.exit();
-                callback(null, {
-                  statusCode: 200,
-                  body: JSON.stringify({
-                    message: '成功',
-                    input: event,
-                  })
+
+                  hexo.exit();
+                  callback(null, {
+                    statusCode: 200,
+                    body: JSON.stringify({
+                      message: '成功',
+                      input: event,
+                    })
+                  });
                 });
               })
               .catch(() => {
