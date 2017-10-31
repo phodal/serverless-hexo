@@ -24,7 +24,7 @@ let create = (event, context, callback) => {
               .then(() => {
                 console.info(`Hexo done`);
                 // resolve full folder path
-                const distFolderPath = path.join(__dirname, "tmp/serverless-hexo-blog-static-files-master/public");
+                const distFolderPath = path.join("/tmp/serverless-hexo-blog-static-files-master/public");
                 fs.readdir(distFolderPath, (err, files) => {
                   if (!files || files.length === 0) {
                     console.log(`provided folder '${distFolderPath}' is empty or does not exist.`);
