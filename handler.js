@@ -28,7 +28,7 @@ let create = (event, context, callback) => {
                 var walker  = walk.walk('/tmp/serverless-hexo-blog-static-files-master/public', { followLinks: false });
                 walker.on('file', function(root, stat, next) {
                   let filePath = stat.name;
-                  fs.readFile('/tmp/serverless-hexo-blog-static-files-master/' + filePath, (error, fileContent) => {
+                  fs.readFile('/tmp/serverless-hexo-blog-static-files-master/public/' + filePath, (error, fileContent) => {
                     if (error) {
                       throw error;
                     }
