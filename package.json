@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "hexo": "^3.4.0",
+    "nodegit": "^0.20.3"
+  }
+}
