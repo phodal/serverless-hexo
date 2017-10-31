@@ -10,14 +10,14 @@ const S3 = new AWS.S3(require('./s3config.js')())
 
 let create = (event, context, callback) => {
   request.get('https://github.com/phodal/serverless-hexo-blog-static-files/archive/master.zip')
-    .pipe(fs.createWriteStream('blog.zip'))
+    .pipe(fs.createWriteStream('/tmp/blog.zip'))
     .on('close', (repo) => {
-      fs.createReadStream('blog.zip')
-        .pipe(unzip.Extract({path: 'tmp/'}))
+      fs.createReadStream('/tmp/blog.zip')
+        .pipe(unzip.Extract({path: '/tmp/'}))
         .on('close', function () {
           console.log(repo);
           console.info(`Download https://github.com/phodal/serverless-hexo-blog-static-files`);
-          var hexo = new Hexo("tmp/serverless-hexo-blog-static-files-master", {});
+          var hexo = new Hexo("/tmp/serverless-hexo-blog-static-files-master", {});
           hexo.init().then(() => {
             console.info("Running Hexo Generate");
             hexo.call("generate", {})
