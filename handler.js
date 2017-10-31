@@ -56,6 +56,9 @@ let create = (event, context, callback) => {
 
                     fs.readFile(filePath, (error, fileContent) => {
                       if (error) {
+                        console.log("---------------");
+                        console.log(filePath);
+                        console.log(error);
                         throw error;
                       }
                       S3.putObject({
