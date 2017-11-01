@@ -1,4 +1,7 @@
 {
+  "hexo": {
+    "version": "3.4.0"
+  },
   "dependencies": {
     "aws-sdk": "^2.141.0",
     "hexo": "^3.4.0",

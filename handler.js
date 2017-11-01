@@ -11,23 +11,31 @@ const walk = require('walk');
 
 let create = (event, context, callback) => {
   request.get('https://github.com/phodal/serverless-hexo-blog-static-files/archive/master.zip')
-    .pipe(fs.createWriteStream('/tmp/blog.zip'))
+    .pipe(fs.createWriteStream('tmp/blog.zip'))
     .on('close', (repo) => {
-      fs.createReadStream('/tmp/blog.zip')
-        .pipe(unzip.Extract({path: '/tmp/'}))
+      fs.createReadStream('tmp/blog.zip')
+        .pipe(unzip.Extract({path: 'tmp/'}))
         .on('close', function () {
           console.log(repo);
           console.info(`Download https://github.com/phodal/serverless-hexo-blog-static-files`);
-          var hexo = new Hexo("/tmp/serverless-hexo-blog-static-files-master", {});
+          var hexo = new Hexo("tmp/serverless-hexo-blog-static-files-master", {});
+
+          hexo.loadPlugin(require.resolve('hexo-renderer-marked'))
+          hexo.loadPlugin(require.resolve('hexo-renderer-stylus'))
+          hexo.loadPlugin(require.resolve('hexo-generator-tag'))
+          hexo.loadPlugin(require.resolve('hexo-generator-index'))
+          hexo.loadPlugin(require.resolve('hexo-generator-category'))
+          hexo.loadPlugin(require.resolve('hexo-generator-archive'))
+
           hexo.init().then(() => {
             console.info("Running Hexo Generate");
             hexo.call("generate", {})
               .then(() => {
                 console.info(`Hexo done`);
                 // resolve full folder path
-                var walker  = walk.walk('/tmp/serverless-hexo-blog-static-files-master/public', { followLinks: false });
+                var walker  = walk.walk('tmp/serverless-hexo-blog-static-files-master/public', { followLinks: false });
                 walker.on('file', function(root, stat, next) {
-                  let filePath = root.toString().substring('/tmp/serverless-hexo-blog-static-files-master/public'.length + 1);
+                  let filePath = root.toString().substring('tmp/serverless-hexo-blog-static-files-master/public'.length + 1);
                   let fileName = stat.name;
                   fs.readFile(path.join(root, stat.name), (error, fileContent) => {
                     if (error) {
@@ -83,6 +91,6 @@ let create = (event, context, callback) => {
 };
 
 
-// create();
+create();
 
 exports.create = create;
