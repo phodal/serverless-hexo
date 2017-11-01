@@ -10,11 +10,23 @@ const S3 = new AWS.S3(require('./s3config.js')());
 const walk = require('walk');
 
 let create = (event, context, callback) => {
-  let repoAddress = 'https://github.com/phodal/serverless-hexo-blog-static-files';
-  let tmpPath = 'tmp/';
-  let blogZipFile = tmpPath + 'blog.zip';
-  let repoUnzipPath = `${tmpPath}/serverless-hexo-blog-static-files-master`;
+  let userName = 'phodal';
+  let repoName = 'serverless-hexo-blog-static-files';
   let bucketName = 'static.wdsm.io';
+  let tmpPath = 'tmp/';
+
+  if(process.env.USER_NAME) {
+    userName = process.env.USER_NAME;
+    repoName = process.env.REPO_NAME;
+    bucketName = process.env.BUCKET_NAME;
+    tmpPath = '/tmp/';
+  }
+
+  console.log(userName, repoName, bucketName, tmpPath);
+
+  let repoAddress = `https://github.com/${userName}/${repoName}`;
+  let blogZipFile = tmpPath + 'blog.zip';
+  let repoUnzipPath = `${tmpPath}/${repoName}-master`;
 
   request.get(`${repoAddress}/archive/master.zip`)
     .pipe(fs.createWriteStream(blogZipFile))

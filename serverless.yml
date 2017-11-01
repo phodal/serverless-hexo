@@ -61,6 +61,10 @@ functions:
       - http:
           path: create
           method: get
+    environment:
+      USER_NAME: phodal
+      REPO_NAME: serverless-hexo-blog-static-files
+      BUCKET_NAME: static.wdsm.io
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
