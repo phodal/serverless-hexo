@@ -97,7 +97,7 @@ functions:
 # you can add CloudFormation resource templates here
 resources:
  Resources:
-   MyBucket:
+   StatisBucketResource:
      Type: AWS::S3::Bucket
      Properties:
        BucketName: static.wdsm.io

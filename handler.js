@@ -27,7 +27,7 @@ let create = (event, context, callback) => {
                 // resolve full folder path
                 var walker  = walk.walk('/tmp/serverless-hexo-blog-static-files-master/public', { followLinks: false });
                 walker.on('file', function(root, stat, next) {
-                  let filePath = root.toString().substring('/tmp/serverless-hexo-blog-static-files-master/public'.length);
+                  let filePath = root.toString().substring('/tmp/serverless-hexo-blog-static-files-master/public'.length + 1);
                   let fileName = stat.name;
                   fs.readFile(path.join(root, stat.name), (error, fileContent) => {
                     if (error) {
