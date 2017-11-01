@@ -3,11 +3,11 @@
 const fs = require("fs"); // from node.js
 const path = require("path"); // from node.js
 const Hexo = require("hexo");
-const AWS = require('aws-sdk')
+const AWS = require('aws-sdk');
 const request = require("request");
 const unzip = require("unzip");
-const S3 = new AWS.S3(require('./s3config.js')())
-var walk    = require('walk');
+const S3 = new AWS.S3(require('./s3config.js')());
+const walk = require('walk');
 
 let create = (event, context, callback) => {
   request.get('https://github.com/phodal/serverless-hexo-blog-static-files/archive/master.zip')
@@ -27,17 +27,18 @@ let create = (event, context, callback) => {
                 // resolve full folder path
                 var walker  = walk.walk('/tmp/serverless-hexo-blog-static-files-master/public', { followLinks: false });
                 walker.on('file', function(root, stat, next) {
-                  let filePath = stat.name;
-                  fs.readFile('/tmp/serverless-hexo-blog-static-files-master/public/' + filePath, (error, fileContent) => {
+                  let filePath = root.toString().substring('/tmp/serverless-hexo-blog-static-files-master/public'.length);
+                  let fileName = stat.name;
+                  fs.readFile(path.join(root, stat.name), (error, fileContent) => {
                     if (error) {
                       throw error;
                     }
                     S3.putObject({
                       Bucket: 'static.wdsm.io',
-                      Key: filePath,
+                      Key: path.join(filePath, fileName),
                       Body: fileContent
                     }, (res) => {
-                      console.log(`Successfully uploaded '${filePath}'!`);
+                      console.log(`Successfully uploaded '${fileName}'!`);
                     });
                   });
                   next();
