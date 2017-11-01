@@ -93,6 +93,6 @@ let create = (event, context, callback) => {
 };
 
 
-create();
+// create();
 
 exports.create = create;
