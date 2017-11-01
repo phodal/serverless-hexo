@@ -18,7 +18,9 @@ let create = (event, context, callback) => {
         .on('close', function () {
           console.log(repo);
           console.info(`Download https://github.com/phodal/serverless-hexo-blog-static-files`);
-          var hexo = new Hexo("/tmp/serverless-hexo-blog-static-files-master", {});
+          var hexo = new Hexo("/tmp/serverless-hexo-blog-static-files-master", {
+            config_path: '/tmp/serverless-hexo-blog-static-files-master/_config.yml'
+          });
 
           hexo.loadPlugin(require.resolve('hexo-renderer-marked'))
           hexo.loadPlugin(require.resolve('hexo-renderer-stylus'))
