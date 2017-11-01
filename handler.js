@@ -38,6 +38,7 @@ let create = (event, context, callback) => {
                       Key: path.join(filePath, fileName),
                       Body: fileContent
                     }, (res) => {
+                      console.log(res);
                       console.log(`Successfully uploaded '${fileName}'!`);
                     });
                   });
@@ -82,6 +83,6 @@ let create = (event, context, callback) => {
 };
 
 
-create();
+// create();
 
 exports.create = create;

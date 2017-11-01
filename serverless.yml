@@ -97,10 +97,12 @@ functions:
 # you can add CloudFormation resource templates here
 resources:
  Resources:
-   NewResource:
+   MyBucket:
      Type: AWS::S3::Bucket
      Properties:
        BucketName: static.wdsm.io
+       AccessControl: PublicReadWrite
+
 #  Outputs:
 #     NewOutput:
 #       Description: "Description for the output"
