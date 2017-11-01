@@ -106,6 +106,8 @@ resources:
      Properties:
        BucketName: static.wdsm.io
        AccessControl: PublicReadWrite
+       WebsiteConfiguration:
+         IndexDocument: index.html
 
 #  Outputs:
 #     NewOutput:
