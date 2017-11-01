@@ -1,6 +1,7 @@
 Serverless Hexo
 ===
 
+[Serverless 应用开发指南：使用 Lambda 构建 Hexo 静态网站](https://www.phodal.com/blog/serverless-development-guide-hexo-static-website-generate-in-cloud/)
 
 install
 ---
@@ -20,15 +21,14 @@ yarn install
 env
 ---
 
-change in ``handler.js``:
-
- - repo name
- - user name
- 
 change in ``serverless.yml``:
   
- - s3 bucket name
-
+```
+    environment:
+      USER_NAME: phodal
+      REPO_NAME: serverless-hexo-blog-static-files
+      BUCKET_NAME: static.wdsm.io
+```
 
 deploy
 ---
