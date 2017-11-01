@@ -22,6 +22,7 @@ let create = (event, context, callback) => {
             config_path: '/tmp/serverless-hexo-blog-static-files-master/_config.yml'
           });
 
+          hexo.loadPlugin(require.resolve('hexo-renderer-ejs'))
           hexo.loadPlugin(require.resolve('hexo-renderer-marked'))
           hexo.loadPlugin(require.resolve('hexo-renderer-stylus'))
           hexo.loadPlugin(require.resolve('hexo-generator-tag'))
